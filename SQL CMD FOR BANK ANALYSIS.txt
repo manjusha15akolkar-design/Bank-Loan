@@ -1,0 +1,57 @@
+# Q1 TOTAL LOAN AMOUNT FUNDED
+select concat(ROUND(SUM(Funded_Amount)/1000000,2),"M") as "Total loan Funded" from loans;
+
+#Q2 TOTAL LOANS
+select count(loan_amount) as "Total_loan_issued" from loans;
+
+#Q3 TOTAL COLLECTION
+select concat(round(sum(total_rec_prncp+total_rrec_int+total_rec_late_fee)/1000000,2),"M") as "Total_collection" from loans;
+
+#Q4 TOTAL INTEREST
+select concat(round(sum(loan_amount+int_rate)/1000000,2),"M") as "Total_interest" from loans;
+
+#Q5 BRANCH WISE TOTAL REVENUE
+select branch_name,sum(int_rate + Total_fees_) as Total_Revenue from loans group by 1;
+
+#Q6 STSTE WISE LOAN
+select state_name,concat(round(sum(loan_amount) /1000000,2),"M") as Total_Loan from loans group by State_name;
+
+#Q7 RELEGION WISE LOAN
+select religion,concat(round(sum(loan_amount)/1000000,2),"M") as Total_Loan from loans group by 1;
+
+#Q8 PRODUCT GROUP WISE LOAN
+select purpose_category,concat(round(sum(loan_amount)/100000,2),"K") as Total_Loam_Amt from loans group by 1;
+
+#Q9 DISBURSEMENT TREND
+select date_format(disbursement_date, '%y') as "Year",concat(round(sum(loan_amount)/1000000,2),"M") as "Total_loan_amt" 
+from loans group by 1 order by Year;
+
+#Q10 GRADE WISE LOAN
+select grrade,concat(round(sum(loan_amount)/1000000,2),"M") as Total_Loan_amt from loans group by 1;
+
+#Q11 COUNT OF DEFAULT LOAN
+select is_default_loan as "Default_loan",count(is_default_loan) as "Default_loan_count" from loans 
+where is_default_loan="y" group by 1;
+
+#Q12 COUNT OF DELINQUENT LOAN
+select is_delinquent_loan as "Delinquent_loan",count(is_delinquent_loan) as "Delinquent_loan_count" from loans 
+where is_delinquent_loan="Y" group by 1;
+
+#Q13 DELINQUENT LOAN RATE
+select concat(round(sum(case when is_delinquent_loan="Y" then 1 else 0 end)*100.0/count(*),2),"%") as "delinquent loan Rate" from loans;
+
+#Q14 DEFAULT LOAN RATE
+select concat(round(sum(case when is_default_loan="Y" then 1 else 0 end)*100.0/count(*),2),"%") as "Default_loan_rate" from loans;
+
+#Q15 LOAN STATUS WISE LOAN
+select loan_status,concat(round(sum(loan_amount)/1000000,2),"M") as Total_Loan_Amt from loans group by 1;
+
+#Q16 AGE GROUP WISE LOAN
+select age,concat(round(sum(loan_amount)/1000000,2),"M") as Total_Loan_amt from loans group by 1;
+
+#Q17 NO VERIFIED LOAN
+select verification_status,count(verification_status) as "count_of_unverified" from loans
+ where verification_status="not verified" group by 1;
+ 
+#Q18 LOAN METURITY
+ select term,concat(round(sum(loan_amount)/1000000,2),"M") as "Total_loan_amt"  from loans group by term;
